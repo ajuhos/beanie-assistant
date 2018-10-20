@@ -2,11 +2,15 @@
 
 ## Preparation
 
-Setup Google Default Credentials, eg.
+1) Setup Google Cloud SDK
+
+2) Setup Google Default Credentials, eg.
 
 ```bash
  $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/ajuhos/Desktop/JUNCTION/credentials.json"
 ```
+
+3) [Install SoX](https://www.npmjs.com/package/node-record-lpcm16#dependencies)
 
 ## Usage
 
