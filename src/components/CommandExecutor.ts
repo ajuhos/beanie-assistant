@@ -40,7 +40,11 @@ export class CommandExecutor {
         },
 
         "voice_emoji": async command => {
-            return { command, kind: 'speech', value: command.parameters['emoji'] }
+            return { command, kind: 'beep', value: command.parameters['emoji'].split(' ')[0] }
+        },
+
+        "create_note": async command => {
+            return { command, kind: 'beep', value: 'success' }
         }
 
     };

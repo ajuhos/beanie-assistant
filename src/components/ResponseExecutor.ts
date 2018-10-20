@@ -31,7 +31,7 @@ export class ResponseExecutor {
     }
 
     private async beepResponse(value: string) {
-        return this.sayResponse(`beep ${value}`)
+        return new Promise(resolve => player.play(`./sounds/${value}.mp3`, () => resolve()))
     }
 
     async executeResponse({ kind, value }: CommandResponse) {
