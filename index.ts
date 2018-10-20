@@ -1,7 +1,9 @@
 import { IntegratedAssistant } from './src/IntegratedAssistant';
-import { MicRecognizer } from './src/components';
+import { MicRecognizer, CommandExecutor } from './src/components';
 
-const assistant = new IntegratedAssistant(new MicRecognizer, result => {
+const executor = new CommandExecutor;
+const assistant = new IntegratedAssistant(new MicRecognizer, async command => {
+    const result = await executor.executeCommand(command);
     console.log(result)
 });
 

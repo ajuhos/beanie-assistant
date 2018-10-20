@@ -1,4 +1,3 @@
-// Imports the Dialogflow library
 const dialogflow = require('dialogflow');
 const FALLBACK_INTENT = 'Default Fallback Intent';
 
@@ -29,7 +28,6 @@ export class CommandProcessor {
     }
 
     private processParameter(parameter: { structValue?: { fields: any }, stringValue?: any, kind: string }) {
-        console.log(parameter);
         if(parameter.kind === "structValue") {
             return this.processParameterList(parameter.structValue.fields)
         }
