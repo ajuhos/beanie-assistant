@@ -83,6 +83,15 @@ export class CommandExecutor {
             }
         },
 
+        "add_to_calendar": async command => {
+            const date = buildDateText(command);
+            const location = command.parameters["location"]
+                ? (`at ${command.parameters["location"]["business-name"] || command.parameters["location"]["shortcut"]}`)
+                : '';
+
+            return {command, kind: 'speech', value: `Created event ${location} ${date}`}
+        },
+
         "end_call": async command => {
             if(!this.callSession) return { command, kind: 'beep', value: 'failure' };
             await request.post({
