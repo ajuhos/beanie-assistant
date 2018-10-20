@@ -1,5 +1,13 @@
 // Imports the Dialogflow library
 const dialogflow = require('dialogflow');
+const FALLBACK_INTENT = 'Default Fallback Intent';
+
+export type CommandResult = {
+    intent: string,
+    parameters: { [key:string]: any },
+    context: string,
+    command: string
+}
 
 export class CommandProcessor {
 
@@ -11,28 +19,45 @@ export class CommandProcessor {
         this.sessionPath = this.sessionClient.sessionPath('junction-220007', 'teszt');
     }
 
-    async tryProcess(command: string, context: string) {
-        /*    const words = command.trim().split(' ');
-        if(words.length > 2) {
-              console.log({ context, command });
-              return true
-          }*/
+    private processParameterList(parameters: any) {
+        for(let parameterName in parameters) {
+            if(parameters.hasOwnProperty(parameterName)) {
+                parameters[parameterName] = this.processParameter(parameters[parameterName])
+            }
+        }
+        return parameters
+    }
 
-        console.log({ context, command });
+    private processParameter(parameter: { structValue?: { fields: any }, stringValue?: any, kind: string }) {
+        console.log(parameter);
+        if(parameter.kind === "structValue") {
+            return this.processParameterList(parameter.structValue.fields)
+        }
+        else {
+            return parameter[parameter.kind]
+        }
+    }
 
-        const [ response ] = await this.sessionClient.detectIntent({
-            session: this.sessionPath,
-            queryInput: {
-                text: {
-                    text: command + ' ' + context,
-                    languageCode: 'en-US',
+    async tryProcess(command: string, context: string): Promise<CommandResult|false> {
+        let [ { queryResult: { parameters, intent: { displayName: intent } } } ]
+            = await this.sessionClient.detectIntent({
+                session: this.sessionPath,
+                queryInput: {
+                    text: {
+                        text: command + ' ' + context,
+                        languageCode: 'en-US',
+                    },
                 },
-            },
-        });
+            });
 
-        console.log(response);
+        if(intent === FALLBACK_INTENT) return false;
 
-        return false
+        if(parameters) {
+            parameters = this.processParameterList(parameters.fields);
+
+        }
+
+        return { intent, parameters, context, command }
     }
 
 }

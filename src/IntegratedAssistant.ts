@@ -1,4 +1,4 @@
-import { SpeechContext, CommandProcessor } from './components';
+import {SpeechContext, CommandProcessor, CommandResult} from './components';
 import { hasKeyword, splitByKeyword } from './utils'
 
 export interface Recogniser {
@@ -10,7 +10,7 @@ export class IntegratedAssistant {
 
     recognizer: Recogniser;
 
-    constructor(recognizer: Recogniser, callback: (result: any) => void = null, KEYWORD = "nokia") {
+    constructor(recognizer: Recogniser, callback: (result: CommandResult) => void = null, KEYWORD = "nokia") {
         this.recognizer = recognizer;
         const context = new SpeechContext;
         const command = new SpeechContext;
