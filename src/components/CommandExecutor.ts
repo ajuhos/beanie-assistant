@@ -57,7 +57,8 @@ export class CommandExecutor {
             }
         },
 
-        "success": async command => ({ command, kind: 'beep', value: 'keyword' })
+        "keyword": async command => ({ command, kind: 'beep', value: 'keyword' }),
+        "success": async command => ({ command, kind: 'beep', value: 'success' })
     };
 
     async executeCommand(command: CommandResult): Promise<CommandResponse> {

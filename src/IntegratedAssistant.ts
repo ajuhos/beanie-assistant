@@ -56,7 +56,7 @@ export class IntegratedAssistant {
             }
             else if (hasKeyword(KEYWORD, text)) {
                 keywordMode = true;
-                if(callback) callback({ intent: "success", context: "", command: "", parameters: {} })
+                if(callback) callback({ intent: "keyword", context: "", command: "", parameters: {} })
             }
             else if (final) {
                 const emoji = extractVoiceEmoji(EMOJI_LIST, text);
