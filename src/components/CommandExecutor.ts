@@ -14,6 +14,8 @@ export class CommandExecutor {
 
     }
 
+    callSession: any;
+
     private executors: { [key: string]: (command: CommandResult) => Promise<CommandResponse> } = {
 
         "currency_exchange": async command => {
@@ -55,6 +57,16 @@ export class CommandExecutor {
             else {
                 return {command, kind: 'speech', value: `You have a secret date with your second girlfriend ${date}`}
             }
+        },
+
+        "end_call": async command => {
+            if(!this.callSession) return { command, kind: 'beep', value: 'failure' };
+            await request.post({
+                uri: 'https://mn.developer.nokia.com/callback/endCallCalled',
+                body: this.callSession,
+                json: true
+            });
+            return { command, kind: 'beep', value: 'success' }
         },
 
         "keyword": async command => ({ command, kind: 'beep', value: 'keyword' }),

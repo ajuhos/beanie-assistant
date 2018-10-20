@@ -8,13 +8,12 @@ server.listen();
 const executor = new CommandExecutor;
 const responder = new ResponseExecutor;
 const assistant = new IntegratedAssistant(new MicRecognizer, async command => {
-    assistant.enabled = false;
+    executor.callSession = server.callSession;
     const result = await executor.executeCommand(command);
     if(result) {
         await responder.executeResponse(result);
         console.log(result)
     }
-    assistant.enabled = true;
 });
 
 assistant.start();

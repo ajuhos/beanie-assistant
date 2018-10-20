@@ -14,7 +14,7 @@ export class MicRecognizer {
                 sampleRateHertz: sampleRateHertz,
                 languageCode: languageCode,
             },
-            interimResults: true // If you want interim results, set this to true
+            interimResults: true
         }
     }
 
@@ -27,18 +27,19 @@ export class MicRecognizer {
     };
 
     start() {
+        console.log("The assistant is starting up...");
+
         const recognizeStream = this.client
             .streamingRecognize(this.request)
-            .on('error', console.error)
+            .on('error', () => this.start)
             .on('data', this.handleData);
 
         record
             .start({
                 sampleRateHertz: this.request.config.sampleRateHertz,
                 threshold: 0,
-                // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
                 verbose: false,
-                recordProgram: 'rec', // Try also "arecord" or "sox"
+                recordProgram: 'rec',
                 silence: '10.0',
             })
             .on('error', console.error)

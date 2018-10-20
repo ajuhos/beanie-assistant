@@ -2,7 +2,7 @@ import {SpeechContext, CommandProcessor, CommandResult} from './components';
 import { hasKeyword, splitByKeyword, extractVoiceEmoji } from './utils'
 
 const DEFAULT_EMOJI_LIST = [ 'clap clap', 'beep beep' ];
-const MAX_TRIALS = 2;
+const MAX_TRIALS = 0;
 
 export interface Recogniser {
     start: () => void
@@ -12,9 +12,9 @@ export interface Recogniser {
 export class IntegratedAssistant {
 
     recognizer: Recogniser;
-    enabled: boolean = true;
+    private enabled: boolean = true;
 
-    constructor(recognizer: Recogniser, callback: (result: CommandResult) => void = null, KEYWORD = "beanie", EMOJI_LIST = DEFAULT_EMOJI_LIST) {
+    constructor(recognizer: Recogniser, callback: (result: CommandResult) => Promise<void> = null, KEYWORD = "beanie", EMOJI_LIST = DEFAULT_EMOJI_LIST) {
         this.recognizer = recognizer;
         const context = new SpeechContext;
         const command = new SpeechContext;
@@ -23,9 +23,12 @@ export class IntegratedAssistant {
         let keywordMode = false;
         let trials = 0;
         recognizer.onTranscription = async (text, final) => {
-            if(!this.enabled) return;
+            if(!this.enabled) {
+                console.log("SKIP");
+                return;
+            }
 
-            console.log(`[${final}] ${text}`);
+            console.log(`[${final}][${keywordMode}] ${text}`);
 
             if (keywordMode) {
                 if (final) {
@@ -33,24 +36,31 @@ export class IntegratedAssistant {
                     if (result.context.length) context.add(result.context);
                     if (result.command.length) command.add(result.command);
 
-                    const output = await processor.tryProcess(command.get(), context.get());
+                    console.log('command', command.get());
 
-                    if (output) {
-                        keywordMode = false;
-                        context.clear();
-                        command.clear();
+                    if(command.get().length) {
+                        console.log('processing command...');
+                        const output = await processor.tryProcess(command.get(), context.get());
 
-                        if(callback) callback(output)
-                    }
-                    else if(trials < MAX_TRIALS) {
-                        trials++
-                    }
-                    else {
-                        keywordMode = false;
-                        context.clear();
-                        command.clear();
+                        if (output) {
+                            this.enabled = false;
+                            keywordMode = false;
+                            context.clear();
+                            command.clear();
 
-                        if(callback) callback({ intent: "failure", context: "", command: "", parameters: {} })
+                            if (callback) await callback(output);
+                            this.enabled = true;
+                        }
+                        else if (trials < MAX_TRIALS) {
+                            trials++
+                        }
+                        else {
+                            keywordMode = false;
+                            context.clear();
+                            command.clear();
+
+                            if (callback) callback({intent: "failure", context: "", command: "", parameters: {}})
+                        }
                     }
                 }
             }

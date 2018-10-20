@@ -26,7 +26,7 @@ const tests = [
 let numOfPassed = 0
 
 tests.forEach((test, i) => {
-    const assistant = new IntegratedAssistant(new FileRecognizer(test.file), (result) => {
+    const assistant = new IntegratedAssistant(new FileRecognizer(test.file), async (result) => {
 
         const normalisedExpect = {
             intent: test.expect.intent,

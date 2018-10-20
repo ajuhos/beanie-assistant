@@ -8,7 +8,7 @@ export const hasKeyword = (keyword: string, text: string) => {
 export const splitByKeyword = (keyword: string, text: string) => {
     const words = text.toLowerCase().trim().split(' ');
 
-    let hadKeyword = false;
+    let hadKeyword = words.indexOf(keyword) === -1;
     let context = [];
     let command = [];
     for(let word of words) {

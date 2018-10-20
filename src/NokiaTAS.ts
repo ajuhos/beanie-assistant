@@ -5,6 +5,8 @@ const bodyParser = require('body-parser'),
 
 export class NokiaTAS {
 
+    callSession: any;
+
     private app: any;
     private responder = new ResponseExecutor;
 
@@ -15,7 +17,7 @@ export class NokiaTAS {
         this.app.use('/sounds', express.static('sounds'));
 
         this.app.post('/', async (req, res) => {
-            const session = req.body;
+            const session = this.callSession = req.body;
 
           /*  await this.responder.executeResponse({
                 kind: 'speech',
