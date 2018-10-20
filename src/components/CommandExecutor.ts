@@ -43,7 +43,30 @@ export class CommandExecutor {
         },
 
         "create_note": async command => {
-            return { command, kind: 'beep', value: 'success' }
+            const Evernote = require('evernote')
+            const token = 'S=s1:U=94f6c:E=16de9f6b7a7:C=16692458ab8:P=1cd:A=en-devtoken:V=2:H=c45ffed4452170daab76887806c88c84'
+            const url = 'https://sandbox.evernote.com/shard/s1/notestore'
+
+            const client = new Evernote.Client({ token })
+            const noteStore = client.getNoteStore()
+
+            const content = `<?xml version="1.0" encoding="UTF-8"?>
+                <!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
+                <en-note>${command.context}</en-note>`
+
+            const note = new Evernote.Types.Note()
+            note.title = `Beanie recording ${moment(Date.now()).format()}`
+            note.content = content
+
+            try {
+                console.log('CREATE_NOTE')
+                await noteStore.createNote(note)
+                return { command, kind: 'beep', value: 'success' }
+            }
+            catch(e) {
+                console.log(e)
+                return { command, kind: 'beep', value: 'failure' }
+            }
         },
 
         "check_calendar": async command => {
