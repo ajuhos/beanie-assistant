@@ -102,6 +102,8 @@ export class CommandExecutor {
             return { command, kind: 'beep', value: 'success' }
         },
 
+        "how_are_you": async command => ({ command, kind: 'speech', value: 'I am fine. Thank you. How can I help you?' }),
+
         "keyword": async command => ({ command, kind: 'beep', value: 'keyword' }),
         "success": async command => ({ command, kind: 'beep', value: 'success' })
     };
