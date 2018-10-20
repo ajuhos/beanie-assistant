@@ -27,3 +27,13 @@ export const splitByKeyword = (keyword: string, text: string) => {
         command: command.join(' ')
     }
 };
+
+export const extractVoiceEmoji = (emojiList: string[], text: string) => {
+    text = text.toLowerCase();
+
+    for(let emoji of emojiList) {
+        if(text.indexOf(emoji) !== -1) return emoji;
+    }
+
+    return false
+};

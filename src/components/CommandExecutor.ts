@@ -15,7 +15,7 @@ export class CommandExecutor {
 
     private executors: { [key: string]: (command: CommandResult) => Promise<CommandResponse> } = {
 
-        "currency_exchange": async (command) => {
+        "currency_exchange": async command => {
             const to = command.parameters['currency-name'];
 
             const response = await request({
@@ -37,6 +37,10 @@ export class CommandExecutor {
             else {
                 return {command, kind: 'beep', value: 'failure' }
             }
+        },
+
+        "voice_emoji": async command => {
+            return { command, kind: 'speech', value: command.parameters['emoji'] }
         }
 
     };

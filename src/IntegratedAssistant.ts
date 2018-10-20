@@ -1,5 +1,7 @@
 import {SpeechContext, CommandProcessor, CommandResult} from './components';
-import { hasKeyword, splitByKeyword } from './utils'
+import { hasKeyword, splitByKeyword, extractVoiceEmoji } from './utils'
+
+const DEFAULT_EMOJI_LIST = [ 'clap clap', 'beep beep' ];
 
 export interface Recogniser {
     start: () => void
@@ -9,8 +11,9 @@ export interface Recogniser {
 export class IntegratedAssistant {
 
     recognizer: Recogniser;
+    enabled: boolean = true;
 
-    constructor(recognizer: Recogniser, callback: (result: CommandResult) => void = null, KEYWORD = "nokia") {
+    constructor(recognizer: Recogniser, callback: (result: CommandResult) => void = null, KEYWORD = "nokia", EMOJI_LIST = DEFAULT_EMOJI_LIST) {
         this.recognizer = recognizer;
         const context = new SpeechContext;
         const command = new SpeechContext;
@@ -18,6 +21,8 @@ export class IntegratedAssistant {
 
         let keywordMode = false;
         recognizer.onTranscription = async (text, final) => {
+            if(!this.enabled) return;
+
             console.log(`[${final}] ${text}`);
 
             if (keywordMode) {
@@ -41,7 +46,13 @@ export class IntegratedAssistant {
                 keywordMode = true;
             }
             else if (final) {
-                context.add(text)
+                const emoji = extractVoiceEmoji(EMOJI_LIST, text);
+                if(emoji) {
+                    callback({ intent: 'voice_emoji', command: '', context: '', parameters: { emoji } })
+                }
+                else {
+                    context.add(text)
+                }
             }
         }
     }
