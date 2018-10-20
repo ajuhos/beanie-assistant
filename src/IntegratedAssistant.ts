@@ -2,6 +2,7 @@ import {SpeechContext, CommandProcessor, CommandResult} from './components';
 import { hasKeyword, splitByKeyword, extractVoiceEmoji } from './utils'
 
 const DEFAULT_EMOJI_LIST = [ 'clap clap', 'beep beep' ];
+const MAX_TRIALS = 2;
 
 export interface Recogniser {
     start: () => void
@@ -20,6 +21,7 @@ export class IntegratedAssistant {
         const processor = new CommandProcessor;
 
         let keywordMode = false;
+        let trials = 0;
         recognizer.onTranscription = async (text, final) => {
             if(!this.enabled) return;
 
@@ -39,6 +41,16 @@ export class IntegratedAssistant {
                         command.clear();
 
                         if(callback) callback(output)
+                    }
+                    else if(trials < MAX_TRIALS) {
+                        trials++
+                    }
+                    else {
+                        keywordMode = false;
+                        context.clear();
+                        command.clear();
+
+                        if(callback) callback({ intent: "failure", context: "", command: "", parameters: {} })
                     }
                 }
             }

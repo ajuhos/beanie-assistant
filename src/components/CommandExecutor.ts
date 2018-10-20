@@ -1,5 +1,6 @@
 import {CommandResult} from "./CommandProcessor";
 const request = require('request-promise-native');
+const moment = require('moment');
 
 export type CommandResponse = {
     command: CommandResult,
@@ -29,13 +30,11 @@ export class CommandExecutor {
                 json: true
             });
 
-            console.log(response);
-
             if(response.success) {
-                return {command, kind: 'speech', value: `It is ${Math.round(response.result)} ${to}`}
+                return { command, kind: 'speech', value: `It is ${Math.round(response.result)} ${to}` }
             }
             else {
-                return {command, kind: 'beep', value: 'failure' }
+                return { command, kind: 'beep', value: 'failure' }
             }
         },
 
@@ -45,14 +44,23 @@ export class CommandExecutor {
 
         "create_note": async command => {
             return { command, kind: 'beep', value: 'success' }
-        }
+        },
 
+        "check_calendar": async command => {
+            const date = moment(command.parameters["date"]).calendar();
+            if(Math.random() > 0.5) {
+                return {command, kind: 'speech', value: `You are free on ${date}`}
+            }
+            else {
+                return {command, kind: 'speech', value: `You have a secret date with your second girlfriend on ${date}`}
+            }
+        }
     };
 
-    async executeCommand(command: CommandResult) {
+    async executeCommand(command: CommandResult): Promise<CommandResponse> {
         const executor = this.executors[command.intent];
         if(executor) return executor(command);
-        return false
+        return { command, kind: 'beep', value: 'failure' }
     }
 
 }
