@@ -31,8 +31,12 @@ export class MicRecognizer {
 
         const recognizeStream = this.client
             .streamingRecognize(this.request)
-            .on('error', () => this.start)
-            .on('data', this.handleData);
+            .on('error', () => {
+                this.start()
+            })
+            .on('data', (data) => {
+                this.handleData(data)
+            });
 
         record
             .start({
