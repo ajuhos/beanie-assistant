@@ -47,14 +47,21 @@ export class CommandExecutor {
         },
 
         "check_calendar": async command => {
-            const date = moment(command.parameters["date-time"].date_time || command.parameters["date"]).calendar();
+            const date = moment(
+                command.parameters["date-time"].date_time ||
+                command.parameters["date-time"].startDateTime ||
+                command.parameters["date"]
+            ).calendar();
+
             if(Math.random() > 0.5) {
                 return {command, kind: 'speech', value: `You are free on ${date}`}
             }
             else {
                 return {command, kind: 'speech', value: `You have a secret date with your second girlfriend on ${date}`}
             }
-        }
+        },
+
+        "success": async command => ({ command, kind: 'beep', value: 'success' })
     };
 
     async executeCommand(command: CommandResult): Promise<CommandResponse> {
