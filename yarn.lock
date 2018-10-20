@@ -20,6 +20,13 @@
     retry-request "^4.0.0"
     through2 "^2.0.3"
 
+"@google-cloud/language@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/language/-/language-2.0.0.tgz#0b4d3f01bffddcd9c0c7d8cd486fac65c63d28e5"
+  dependencies:
+    google-gax "^0.20.0"
+    lodash.merge "^4.6.1"
+
 "@google-cloud/projectify@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/projectify/-/projectify-0.3.0.tgz#adb984ac61f7ec855558ef677621b2488c50d05d"
@@ -445,6 +452,15 @@ delegates@^1.0.0:
 detect-libc@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
+
+dialogflow@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/dialogflow/-/dialogflow-0.7.0.tgz#5bb58839c309e5e8cd201f6d9ab617b73285ac58"
+  dependencies:
+    google-gax "^0.20.0"
+    lodash.merge "^4.6.0"
+    lodash.union "^4.6.0"
+    protobufjs "^6.8.0"
 
 diff-match-patch@^1.0.0:
   version "1.0.4"
@@ -973,9 +989,13 @@ lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
 
-lodash.merge@^4.6.1:
+lodash.merge@^4.6.0, lodash.merge@^4.6.1:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
+
+lodash.union@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
 
 lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.11"
