@@ -1,5 +1,6 @@
 import {CommandResult} from "./CommandProcessor";
 const request = require('request-promise-native');
+const moment = require('moment');
 
 export type CommandResponse = {
     command: CommandResult,
@@ -43,6 +44,16 @@ export class CommandExecutor {
 
         "create_note": async command => {
             return { command, kind: 'beep', value: 'success' }
+        },
+
+        "check_calendar": async command => {
+            const date = moment(command.parameters["date"]).calendar();
+            if(Math.random() > 0.5) {
+                return {command, kind: 'speech', value: `You are free on ${date}`}
+            }
+            else {
+                return {command, kind: 'speech', value: `You have a secret date with your second girlfriend on ${date}`}
+            }
         }
     };
 
