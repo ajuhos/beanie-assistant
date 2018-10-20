@@ -44,10 +44,9 @@ export class CommandExecutor {
         "create_note": async command => {
             return { command, kind: 'beep', value: 'success' }
         }
-
     };
 
-    async executeCommand(command: CommandResult) {
+    async executeCommand(command: CommandResult): Promise<CommandResponse> {
         const executor = this.executors[command.intent];
         if(executor) return executor(command);
         return { command, kind: 'beep', value: 'failure' }
