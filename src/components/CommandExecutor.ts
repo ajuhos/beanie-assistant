@@ -1,6 +1,6 @@
 import {CommandResult} from "./CommandProcessor";
+import {buildDateText} from "../utils";
 const request = require('request-promise-native');
-const moment = require('moment');
 
 export type CommandResponse = {
     command: CommandResult,
@@ -47,21 +47,17 @@ export class CommandExecutor {
         },
 
         "check_calendar": async command => {
-            const date = moment(
-                command.parameters["date-time"].date_time ||
-                command.parameters["date-time"].startDateTime ||
-                command.parameters["date"]
-            ).calendar();
+            const date = buildDateText(command);
 
             if(Math.random() > 0.5) {
-                return {command, kind: 'speech', value: `You are free on ${date}`}
+                return {command, kind: 'speech', value: `You are free ${date}`}
             }
             else {
-                return {command, kind: 'speech', value: `You have a secret date with your second girlfriend on ${date}`}
+                return {command, kind: 'speech', value: `You have a secret date with your second girlfriend ${date}`}
             }
         },
 
-        "success": async command => ({ command, kind: 'beep', value: 'success' })
+        "success": async command => ({ command, kind: 'beep', value: 'keyword' })
     };
 
     async executeCommand(command: CommandResult): Promise<CommandResponse> {

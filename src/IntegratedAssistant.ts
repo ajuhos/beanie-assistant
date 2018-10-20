@@ -14,7 +14,7 @@ export class IntegratedAssistant {
     recognizer: Recogniser;
     enabled: boolean = true;
 
-    constructor(recognizer: Recogniser, callback: (result: CommandResult) => void = null, KEYWORD = "nokia", EMOJI_LIST = DEFAULT_EMOJI_LIST) {
+    constructor(recognizer: Recogniser, callback: (result: CommandResult) => void = null, KEYWORD = "beanie", EMOJI_LIST = DEFAULT_EMOJI_LIST) {
         this.recognizer = recognizer;
         const context = new SpeechContext;
         const command = new SpeechContext;
@@ -56,6 +56,7 @@ export class IntegratedAssistant {
             }
             else if (hasKeyword(KEYWORD, text)) {
                 keywordMode = true;
+                if(callback) callback({ intent: "success", context: "", command: "", parameters: {} })
             }
             else if (final) {
                 const emoji = extractVoiceEmoji(EMOJI_LIST, text);
