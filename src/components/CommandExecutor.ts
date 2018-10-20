@@ -29,13 +29,11 @@ export class CommandExecutor {
                 json: true
             });
 
-            console.log(response);
-
             if(response.success) {
-                return {command, kind: 'speech', value: `It is ${Math.round(response.result)} ${to}`}
+                return { command, kind: 'speech', value: `It is ${Math.round(response.result)} ${to}` }
             }
             else {
-                return {command, kind: 'beep', value: 'failure' }
+                return { command, kind: 'beep', value: 'failure' }
             }
         },
 
@@ -52,7 +50,7 @@ export class CommandExecutor {
     async executeCommand(command: CommandResult) {
         const executor = this.executors[command.intent];
         if(executor) return executor(command);
-        return false
+        return { command, kind: 'beep', value: 'failure' }
     }
 
 }
