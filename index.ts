@@ -1,5 +1,9 @@
 import { IntegratedAssistant } from './src/IntegratedAssistant';
 import {MicRecognizer, CommandExecutor, ResponseExecutor} from './src/components';
+import {NokiaTAS} from "./src/NokiaTAS";
+
+const server = new NokiaTAS;
+server.listen();
 
 const executor = new CommandExecutor;
 const responder = new ResponseExecutor;

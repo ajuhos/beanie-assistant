@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 export const hasKeyword = (keyword: string, text: string) => {
     const words = text.toLowerCase().trim().split(' ');
     return words.indexOf(keyword) !== -1
@@ -36,4 +38,20 @@ export const extractVoiceEmoji = (emojiList: string[], text: string) => {
     }
 
     return false
+};
+
+export const buildDateText = (command: any) => {
+    if(command.parameters["date"]) {
+        return `on ${moment(command.parameters["date"]).calendar()}`;
+    }
+    else if(command.parameters["date-time"]) {
+        if(command.parameters["date-time"].date_time) {
+            return `on ${moment(command.parameters["date-time"].date_time).calendar()}`;
+        }
+        else if(command.parameters["date-time"].startDateTime) {
+            return `between ${moment(command.parameters["date-time"].startDateTime).calendar()} and ${moment(command.parameters["date-time"].endDateTime).calendar()}`;
+        }
+    }
+
+    return ''
 };

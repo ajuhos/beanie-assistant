@@ -20,3 +20,7 @@ Start, then talk...
  $ yarn
  $ yarn start
 ```
+
+## Tips
+
+-i {INPUTFILE} -acodec pcm_alaw -ar 8000 -ac 1 {OUTPUTFILE}
