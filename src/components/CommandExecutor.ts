@@ -92,7 +92,7 @@ export class CommandExecutor {
             return {command, kind: 'speech', value: `Created event ${location} ${date}`}
         },
 
-        "end_calla": async command => {
+        "end_call": async command => {
             if(!this.callSession) return { command, kind: 'beep', value: 'failure' };
             await request.post({
                 uri: 'https://mn.developer.nokia.com/callback/endCallCalled',
@@ -107,7 +107,7 @@ export class CommandExecutor {
             return { command, kind: 'beep', value: 'success' }
         },
 
-        "end_call": async command => {
+        "get_weather": async command => {
             try {
                 const apiKey = 'AJ7A9GDgxRQoUGU1C70ekT8m5r9dMDzQ'
                 const city = command.parameters['geo-city'] || 'Budapest'
