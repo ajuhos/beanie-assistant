@@ -125,8 +125,7 @@ export class CommandExecutor {
 
         "get_weather": async command => {
             try {
-                const apiKey = 'AJ7A9GDgxRQoUGU1C70ekT8m5r9dMDzQ'
-                // const apiKey = 'w5wqCJ1JIbh3zbwD51yBy1qc9ZBeReMI'
+                const apiKey = 'w5wqCJ1JIbh3zbwD51yBy1qc9ZBeReMI'
                 const city = command.parameters['geo-city'] || 'Budapest'
                 const date = command.parameters['date']
                 const cityRes = await request.get({
