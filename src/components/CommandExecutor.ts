@@ -107,6 +107,22 @@ export class CommandExecutor {
             return { command, kind: 'beep', value: 'success' }
         },
 
+        "my_geolocation": async command => {
+            //NOKIA API is broken so we fake it...
+            /*const resp = await request.post({
+                uri: 'https://mn.developer.nokia.com/tasseeAPI/location/v1/?address=sip%3A%2B358480786502%40ims8.wirelessfuture.com',
+                body: this.callSession,
+                headers: {
+                    Authorization: '5a8b14c1a353b4000197972f1ae9ba342dc041cf8bdde9a3216e17f0'
+                },
+                json: true
+            });*/
+
+            //TODO: Get name of place from Geolocation.
+
+            return { command, kind: 'speech', value: 'You are at the Junction X Budapest event.'}
+        },
+
         "get_weather": async command => {
             try {
                 const apiKey = 'AJ7A9GDgxRQoUGU1C70ekT8m5r9dMDzQ'
