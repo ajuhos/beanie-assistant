@@ -51,6 +51,9 @@ export const buildDateText = (command: any) => {
         else if(command.parameters["date-time"].startDateTime) {
             return `between ${moment(command.parameters["date-time"].startDateTime).calendar()} and ${moment(command.parameters["date-time"].endDateTime).calendar()}`;
         }
+        else {
+            return `on ${moment(command.parameters["date-time"]).calendar()}`;
+        }
     }
 
     return ''
