@@ -1,7 +1,25 @@
 import {SpeechContext, CommandProcessor, CommandResult} from './components';
 import { hasKeyword, splitByKeyword, extractVoiceEmoji } from './utils'
 
-const DEFAULT_EMOJI_LIST = [ 'clap clap', 'beep beep' ];
+const DEFAULT_EMOJI_LIST = [
+    'clap clap',
+    'angry angry',
+    'cry cry',
+    'evil evil',
+    'hallelujah hallelujah',
+    'kiss kiss',
+    'yoda yoda',
+    'sick sick',
+    'waiting waiting',
+    'father father',
+    'hooray hooray',
+    'happy new year',
+    'disco disco',
+    'no no',
+    'okay okay',
+    'funny funny',
+    'chicken chicken'
+];
 const MAX_TRIALS = 0;
 
 export interface Recogniser {
