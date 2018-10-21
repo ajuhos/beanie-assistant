@@ -99,6 +99,11 @@ export class CommandExecutor {
                 body: this.callSession,
                 json: true
             });
+            await request.post({
+                uri: 'https://mn.developer.nokia.com/callback/endCallCalling',
+                body: this.callSession,
+                json: true
+            });
             return { command, kind: 'beep', value: 'success' }
         },
 
