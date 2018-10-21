@@ -48,6 +48,27 @@ We are currently integrating with NOKIA when:
 In the future the whole audio will be managed via the NOKIA network for features like
 in-call access to assistant and private responses.
 
+## The Magic behind Beanie
+
+What makes Beanie different in a technical sense, is how and when it listens to you.
+
+While other assistants are available on your smart devices - and require internet access
+for most capabilities - Beanie lives in the Telephony Network and accessible via a direct
+phone call (to the Beanie Number) or inside any call of yours (eg. a call with a friend).
+This makes Beanie available when and where on other assistant can help you.
+
+The other important difference is how he listens, while others start listening after hearing
+a keyword (like `hey Google`), Beanie is always there. We don't store anything and don't try
+to understand what you said before hearing the keyword, but we use your last sentences as
+the context. So Beanie works like the real assistant (like Donna from Suits), who hears
+everything and always there to help. For example you can ask Beanie to take a note after saying
+or hearing the contents of the to-be-created note.
+
+This is done by separating the pre-keyword and the post-keyword part of what you said and
+building the input for intents by using both in a reverse order (as intents make more sense
+in that order).
+
+
 ## Dev Tips
 
 #### ffmpeg command for announcements
