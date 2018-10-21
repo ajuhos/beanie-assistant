@@ -123,6 +123,38 @@ export class CommandExecutor {
             return { command, kind: 'speech', value: 'You are at the Junction X Budapest event.'}
         },
 
+        "get_weather": async command => {
+            try {
+                const apiKey = 'AJ7A9GDgxRQoUGU1C70ekT8m5r9dMDzQ'
+                const city = command.parameters['geo-city'] || 'Budapest'
+                const date = command.parameters['date']
+                const cityRes = await request.get({
+                    uri: `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`,
+                    json: true
+                })
+                const cityId = cityRes[0].Key
+                if (date) {
+                    const weatherRes = await request.get({
+                        uri: `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${cityId}?apikey=${apiKey}`,
+                        json: true
+                    })
+                    const weatherText = weatherRes.DailyForecasts[0].Day.IconPhrase
+                    return { command, kind: 'speech', value: `The weather tomorrow in ${city} will be ${weatherText}` }
+                }
+                else {
+                    const weatherRes = await request.get({
+                        uri: `http://dataservice.accuweather.com/currentconditions/v1/${cityId}?apikey=${apiKey}`,
+                        json: true
+                    })
+                    const weatherText = weatherRes[0].WeatherText
+                    return { command, kind: 'speech', value: `The current weather in ${city} is ${weatherText}` }
+                }
+            }
+            catch(e) {
+
+            }
+        },
+
         "how_are_you": async command => ({ command, kind: 'speech', value: 'I am fine. Thank you. How can I help you?' }),
 
         "stop_listening": async command => ({ command, kind: 'beep', value: 'stop' }),
