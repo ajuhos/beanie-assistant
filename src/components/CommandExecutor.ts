@@ -102,6 +102,27 @@ export class CommandExecutor {
             return { command, kind: 'beep', value: 'success' }
         },
 
+        "get_weather": async command => {
+            try {
+                const apiKey = 'AJ7A9GDgxRQoUGU1C70ekT8m5r9dMDzQ'
+                const location = command.parameters['location'] || 'Budapest'
+                const cityRes = await request.get({
+                    uri: `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${location}`,
+                    json: true
+                })
+                const cityId = cityRes[0].Key
+                const weatherRes = await request.get({
+                    uri: `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${cityId}?apikey=${apiKey}`,
+                    json: true
+                })
+                const weatherText = weatherRes.DailyForecasts[0].Day.IconPhrase
+                return { command, kind: 'speech', value: `Weather for tomorrow in ${location}: ${weatherText}` }
+            }
+            catch(e) {
+
+            }
+        },
+
         "keyword": async command => ({ command, kind: 'beep', value: 'keyword' }),
         "success": async command => ({ command, kind: 'beep', value: 'success' })
     };
